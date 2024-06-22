@@ -10,12 +10,10 @@ public class Artista {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String nome;
-    private String Tipo;
 
-    public Artista(Long id, String nome, String tipo) {
+    public Artista(Long id, String nome) {
         this.id = id;
         this.nome = nome;
-        Tipo = tipo;
     }
 
     public Artista() {
@@ -37,17 +35,9 @@ public class Artista {
         this.nome = nome;
     }
 
-    public String getTipo() {
-        return Tipo;
-    }
-
-    public void setTipo(String tipo) {
-        Tipo = tipo;
-    }
 
     @Override
     public String toString() {
-        return "nome= " + nome + '\'' +
-                ", Tipo='" + Tipo ;
+        return "nome= " + nome ;
     }
 }
