@@ -2,6 +2,8 @@ package br.com.alura.desafio.principal;
 
 import br.com.alura.desafio.dtos.ArtistaDto;
 import br.com.alura.desafio.dtos.DadosBuscadosDto;
+import br.com.alura.desafio.model.Artista;
+import br.com.alura.desafio.repository.ArtistaRepository;
 import br.com.alura.desafio.service.ConsumoAPI;
 import br.com.alura.desafio.service.ConverteDados;
 
@@ -13,8 +15,11 @@ public class Principal {
     private final String URL_DEEZER_PESQUISA = "https://api.deezer.com/search/artist/?q=";
     private ConsumoAPI api = new ConsumoAPI();
     private ConverteDados conversor = new ConverteDados();
+    private ArtistaRepository repository;
+    private List<ArtistaDto> listaBuscada;
 
-    public Principal() {
+    public Principal(ArtistaRepository repository) {
+        this.repository = repository;
     }
 
     public void exibeMenu(){
@@ -24,10 +29,11 @@ public class Principal {
                     *** Screen Sound Música ***
                     
                     1 - Cadastrar Artista
-                    2 - Cadastrar música
-                    3 - Listar mpusica
-                    4 - buscar música por artista
-                    5 - Pesquisar dados sobre um artista
+                    2 - Cadastrar músicas
+                    3 - Listar artistas
+                    4 - Listar musicas
+                    5 - buscar música por artista
+                    6 - Pesquisar dados sobre um artista
                     
                     9 - Sair
                     """;
@@ -42,6 +48,7 @@ public class Principal {
                 case 2:
                     break;
                 case 3:
+                    listarArtistas();
                     break;
                 case 4:
                     break;
@@ -59,15 +66,27 @@ public class Principal {
         }
     }
 
+
     private void cadastrarArtista() {
         System.out.println("Informe o nome desse artista:");
         var nomeArtista = leitura.nextLine();
         buscarArtista(nomeArtista);
 
 
-        System.out.println("Digite o codigo do artista que deseja cadastrar");
+        System.out.println("\nDigite o codigo do artista que deseja cadastrar");
         var idArtista = leitura.nextInt();
         leitura.nextLine();
+
+        //modificar!
+
+//        if(listaBuscada.get(idArtista)!=null){
+//            Artista novoArtista = new Artista(listaBuscada.get(idArtista));
+//            repository.save(novoArtista);
+//            System.out.println("Salvo com sucesso\n Acesse a opção 3 para o ver!");
+//        }else {
+//            System.out.println("Codigo invalido");
+//        }
+
 
 
 
@@ -77,13 +96,23 @@ public class Principal {
         var json = api.obterDados(URL_DEEZER_PESQUISA+nomeArtista.replace(" ", "+").toLowerCase().trim());
         System.out.println(json);
         DadosBuscadosDto dados = conversor.obterDados(json, DadosBuscadosDto.class);
-        List<ArtistaDto> lista = dados.data();
+        listaBuscada = dados.data();
         System.out.println("*** Arstistas encontrados ***");
-        lista.forEach(a->System.out.printf(
+        listaBuscada.forEach(a->System.out.printf(
                 "Codigo: %s - Nome: %s \n",
                 a.id(), a.nome()
         ));
     }
 
+    private void listarArtistas() {
+        List<Artista> artistas = repository.findAll();
+       if (artistas.size()>0){
+           artistas.forEach(a-> System.out.printf("Codigo: %s - Nome: %s \n" +
+                   a.getId(), a.getNome()));
+       }else {
+           System.out.println("Ainda não tem artistas salvos\n");
+       }
+
+    }
 
 }
