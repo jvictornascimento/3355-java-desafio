@@ -59,6 +59,7 @@ public class Principal {
                     listarArtistas();
                     break;
                 case 4:
+                    listarMusicas();
                     break;
                 case 5:
                     break;
@@ -73,6 +74,8 @@ public class Principal {
 
         }
     }
+
+
 
     private void cadastrarArtista() {
         System.out.println("Informe o nome desse artista:");
@@ -130,7 +133,12 @@ public class Principal {
                 "Nome da musica: %s - Ouça agora mesmo no deezer: %s\n",m.titulo(),m.OucaNoDezeer()
         ));
 
-            var musicas = musicasBuscadas.stream().map(Musica::new).collect(Collectors.toList());
+            var musicas = musicasBuscadas.stream()
+                    .map(Musica::new)
+                    .collect(Collectors.toList());
+            for (Musica m : musicas){
+                m.setArtista(artista.get());
+            }
             artista.get().setListaMusicas(musicas);
             repository.save(artista.get());
             System.out.println("Salvo com sucesso!");
@@ -138,6 +146,20 @@ public class Principal {
             System.out.println("Id não encontrado!");
         }
 
+    }
+    private void listarMusicas() {
+        listarArtistas();
+        System.out.println("\nDigite o nome do artista que voce deseja buscar as musicas!");
+        var nomeArtista = leitura.nextLine();
+
+        var artista = repository.findByNomeContainingIgnoreCase(nomeArtista);
+        if(artista.isPresent()){
+            artista.get().getListaMusicas().forEach(m-> System.out.printf(
+                    "Nome da musica: %s - Ouça agora mesmo no deezer: %s\n",m.getTitulo(),m.getOucaNoDezeer()
+            ));
+        }else {
+            System.out.println("Artista não encontrado com esse nome: " + nomeArtista);
+        }
     }
 
 }

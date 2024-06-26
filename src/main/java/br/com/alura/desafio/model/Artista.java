@@ -15,7 +15,7 @@ public class Artista {
     private Long id;
     private Long codigoDeezer;
     private String nome;
-    @OneToMany(mappedBy = "artista",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "artista",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<Musica> listaMusicas;
     @Enumerated(EnumType.STRING)
     private Tipo tipo;
