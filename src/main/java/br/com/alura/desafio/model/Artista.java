@@ -1,36 +1,41 @@
 package br.com.alura.desafio.model;
 
 import br.com.alura.desafio.dtos.ArtistaDto;
+import br.com.alura.desafio.enums.Tipo;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
-@Table(name = "TB_ARTISTA")
+@Table()
 public class Artista {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private Long codigoDeezer;
     private String nome;
-    private String listaMusicas;
-    private String tipo;
+    @OneToMany(mappedBy = "artista",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Musica> listaMusicas;
+    @Enumerated(EnumType.STRING)
+    private Tipo tipo;
     private String imagemCapa;
 
     public Artista() {
     }
 
-    public Artista(Long id, String nome, String listaMusicas, String tipo, String imagemCapa) {
-        this.id = id;
+    public Artista(Long codigoDeezer, String nome, String tipo, String imagemCapa) {
+        this.codigoDeezer = codigoDeezer;
         this.nome = nome;
-        this.listaMusicas = listaMusicas;
-        this.tipo = tipo;
+        this.tipo = Tipo.fromString(tipo);
         this.imagemCapa = imagemCapa;
     }
 
     public Artista(ArtistaDto dto) {
-        this.id = dto.id();
+        this.codigoDeezer = dto.id();
         this.nome = dto.nome();
-        this.listaMusicas = dto.listaMusicas();
-        this.tipo = dto.tipo();
+        this.listaMusicas = null;
+        this.tipo = Tipo.fromString(dto.tipo());
         this.imagemCapa = dto.imagemCapa();
 
     }
@@ -43,6 +48,18 @@ public class Artista {
         this.id = id;
     }
 
+    public Long getCodigoDeezer() {
+        return codigoDeezer;
+    }
+
+    public void setCodigoDeezer(Long codigDeezer) {
+        this.codigoDeezer = codigDeezer;
+    }
+
+    public void setTipo(Tipo tipo) {
+        this.tipo = tipo;
+    }
+
     public String getNome() {
         return nome;
     }
@@ -51,20 +68,12 @@ public class Artista {
         this.nome = nome;
     }
 
-    public String getListaMusicas() {
-        return listaMusicas;
-    }
-
-    public void setListaMusicas(String listaMusicas) {
-        this.listaMusicas = listaMusicas;
-    }
-
-    public String getTipo() {
+    public Tipo getTipo() {
         return tipo;
     }
 
     public void setTipo(String tipo) {
-        this.tipo = tipo;
+        this.tipo =Tipo.fromString(tipo);
     }
 
     public String getImagemCapa() {
@@ -75,14 +84,19 @@ public class Artista {
         this.imagemCapa = imagemCapa;
     }
 
+    public List<Musica> getListaMusicas() {
+        return listaMusicas;
+    }
+
+    public void setListaMusicas(List<Musica> listaMusicas) {
+        this.listaMusicas = listaMusicas;
+    }
+
     @Override
     public String toString() {
-        return "Artista{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", listaMusicas='" + listaMusicas + '\'' +
-                ", tipo='" + tipo + '\'' +
-                ", imagemCapa='" + imagemCapa + '\'' +
-                '}';
+        return  "Codigo no deezer: " + codigoDeezer +
+                " nome: " + nome  +
+                " tipo: " + tipo +
+                " imagemCapa='" + imagemCapa;
     }
 }
