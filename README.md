@@ -1,5 +1,13 @@
 ![thumbnail-Desafio Java](https://github.com/jacqueline-oliveira/3355-java-desafio/assets/66698429/4b068d55-5cfc-480c-b94f-7d48b3c91eb3)
 
+# Conclusão
+Implementado uma apliação que busca em uma api externa do Deezer, o artista que voce desejar slava os dados do artista no banco de dados busca na mesma api as musicas desse artista, tem integração com o chat gpt para buscar informações da vida daquele artista.
+
+
+
+
+
+
 # Desafio
 
 
