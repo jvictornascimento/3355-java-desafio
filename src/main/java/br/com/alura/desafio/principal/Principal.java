@@ -152,8 +152,11 @@ public class Principal {
         System.out.println("\nDigite o nome do artista que voce deseja buscar as musicas!");
         var nomeArtista = leitura.nextLine();
 
-        var artista = repository.findByNomeContainingIgnoreCase(nomeArtista);
+
+        var artista = repository.buscaPorNome(nomeArtista);
+        //System.out.println(artista);
         if(artista.isPresent()){
+            System.out.println(artista.get());
             artista.get().getListaMusicas().forEach(m-> System.out.printf(
                     "Nome da musica: %s - Ouça agora mesmo no deezer: %s\n",m.getTitulo(),m.getOucaNoDezeer()
             ));
