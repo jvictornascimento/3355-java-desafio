@@ -7,6 +7,7 @@ import br.com.alura.desafio.dtos.MusicaDto;
 import br.com.alura.desafio.model.Artista;
 import br.com.alura.desafio.model.Musica;
 import br.com.alura.desafio.repository.ArtistaRepository;
+import br.com.alura.desafio.service.ConsultaChatGTP;
 import br.com.alura.desafio.service.ConsumoAPI;
 import br.com.alura.desafio.service.ConverteDados;
 
@@ -14,6 +15,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Collectors;
+
+import static br.com.alura.desafio.service.ConsultaChatGTP.pesquisa;
 
 public class Principal {
     private Scanner leitura = new Scanner(System.in);
@@ -39,7 +42,7 @@ public class Principal {
                     2 - Cadastrar músicas por artista
                     3 - Listar artistas
                     4 - Listar musicas
-                    5 - buscar música por artista
+                    5 - Top 10 musicas
                     6 - Pesquisar dados sobre um artista
                     
                     9 - Sair
@@ -63,6 +66,9 @@ public class Principal {
                     break;
                 case 5:
                     break;
+                case 6:
+                    consultaGPT();
+                    break;
                 case 9:
                     System.out.println("saindo ....");
                     break;
@@ -74,6 +80,7 @@ public class Principal {
 
         }
     }
+
 
 
 
@@ -163,6 +170,17 @@ public class Principal {
         }else {
             System.out.println("Artista não encontrado com esse nome: " + nomeArtista);
         }
+    }
+    private void consultaGPT() {
+        listarArtistas();
+        System.out.println("\nDigite o nome do artista que voce deseja buscar a historia!");
+        var nomeArtista = leitura.nextLine();
+
+        var artista = repository.buscaPorNome(nomeArtista);
+
+        var texto = pesquisa(artista.get().getNome());
+        System.out.println(texto);
+
     }
 
 }
