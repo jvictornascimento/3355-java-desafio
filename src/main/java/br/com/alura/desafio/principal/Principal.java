@@ -42,8 +42,7 @@ public class Principal {
                     2 - Cadastrar músicas por artista
                     3 - Listar artistas
                     4 - Listar musicas
-                    5 - Top 10 musicas
-                    6 - Pesquisar dados sobre um artista
+                    5 - Saiba mais sobre artista
                     
                     9 - Sair
                     """;
@@ -65,8 +64,6 @@ public class Principal {
                     listarMusicas();
                     break;
                 case 5:
-                    break;
-                case 6:
                     consultaGPT();
                     break;
                 case 9:
@@ -161,7 +158,6 @@ public class Principal {
 
 
         var artista = repository.buscaPorNome(nomeArtista);
-        //System.out.println(artista);
         if(artista.isPresent()){
             System.out.println(artista.get());
             artista.get().getListaMusicas().forEach(m-> System.out.printf(
